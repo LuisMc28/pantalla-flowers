@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Imagen</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+  }
+  #contenedor {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+  #imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* llena toda la pantalla, recortando si hace falta */
+    /* Si prefieres ver la imagen COMPLETA sin recortar (con franjas negras
+       si no coincide la proporción), cambia "cover" por "contain" aquí arriba. */
+    display: block;
+  }
+  #overlay {
+    position: fixed;
+    inset: 0;
+    background: #000; /* Cambia este color si quieres otro fondo antes de revelar la imagen */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+    font-size: 1.3rem;
+    cursor: pointer;
+    text-align: center;
+    padding: 20px;
+    z-index: 10;
+    transition: opacity 0.4s ease;
+  }
+  #overlay.oculto {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+  <div id="contenedor">
+    <img id="imagen" src="flor_amarilla.png" alt="" />
+  </div>
+
+  <div id="overlay">Toca para continuar 🔊</div>
+
+  <audio id="audio" src="golden.mp3" loop></audio>
+
+  <script>
+    const overlay = document.getElementById("overlay");
+    const audio = document.getElementById("audio");
+
+    overlay.addEventListener("click", () => {
+      audio.play().catch((err) => console.warn("No se pudo reproducir el audio:", err));
+
+      // Intenta pantalla completa real del navegador (opcional, mejora la experiencia)
+      const el = document.documentElement;
+      if (el.requestFullscreen) {
+        el.requestFullscreen().catch(() => {});
+      }
+
+      overlay.classList.add("oculto");
+    });
+  </script>
+</body>
+</html>
